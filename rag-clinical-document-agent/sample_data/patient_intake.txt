@@ -1,0 +1,66 @@
+PATIENT INTAKE SUMMARY
+MedCore Health System — Confidential Clinical Document
+Document ID: MCS-2024-00847
+Date of Service: March 15, 2024
+Attending Physician: Dr. Sarah Okonkwo, MD — Internal Medicine
+
+PATIENT INFORMATION
+Name: James R. Whitfield (fictional)
+Date of Birth: 04/12/1958 | Age: 65
+MRN: 00847-JRW
+Insurance: Medicare Part B | Policy: MCA-8847712
+Emergency Contact: Patricia Whitfield (spouse) | (614) 555-0182
+
+CHIEF COMPLAINT
+Patient presents with increased shortness of breath, fatigue, and swelling in lower extremities over the past three weeks. Reports difficulty sleeping in flat position.
+
+MEDICAL HISTORY
+- Congestive Heart Failure (CHF) diagnosed 2019
+- Type 2 Diabetes Mellitus diagnosed 2014
+- Hypertension diagnosed 2010
+- Hyperlipidemia diagnosed 2012
+- Former smoker, quit 2005, 30 pack-year history
+
+CURRENT MEDICATIONS
+- Lisinopril 10mg — once daily (ACE inhibitor, hypertension/CHF)
+- Metformin 1000mg — twice daily (Type 2 Diabetes)
+- Carvedilol 12.5mg — twice daily (beta blocker, CHF)
+- Furosemide 40mg — once daily (diuretic, fluid retention)
+- Atorvastatin 40mg — once daily (hyperlipidemia)
+- Aspirin 81mg — once daily (cardiovascular protection)
+
+ALLERGIES
+- Penicillin: rash and hives
+- Sulfa drugs: anaphylaxis (carries EpiPen)
+
+VITAL SIGNS
+Blood Pressure: 148/92 mmHg (elevated)
+Heart Rate: 88 bpm (normal sinus rhythm)
+Respiratory Rate: 20 breaths/min (mildly elevated)
+Oxygen Saturation: 94% on room air (borderline low)
+Temperature: 98.6°F
+Weight: 212 lbs (up 8 lbs from last visit 3 weeks ago)
+
+PHYSICAL EXAMINATION
+Cardiovascular: S3 gallop present, mild jugular venous distension
+Respiratory: Bibasilar crackles noted on auscultation
+Extremities: 2+ pitting edema bilateral lower extremities to mid-calf
+Abdomen: Mild hepatomegaly noted
+
+ASSESSMENT AND PLAN
+Primary Diagnosis: Acute decompensated congestive heart failure (ICD-10: I50.9)
+Secondary Diagnoses: Uncontrolled hypertension, Type 2 Diabetes stable
+
+Plan:
+1. Increase Furosemide to 80mg twice daily for 7 days, reassess fluid status
+2. Strict fluid restriction 1.5L per day
+3. Daily weight monitoring, return if weight increases more than 2 lbs overnight
+4. Echocardiogram ordered to assess ejection fraction
+5. BMP and BNP labs ordered
+6. Follow up in 5 days or sooner if symptoms worsen
+7. Patient education provided on low-sodium diet and medication compliance
+
+HIPAA NOTICE
+This document contains protected health information (PHI). 
+Access restricted to treating clinical staff only.
+Unauthorized disclosure prohibited under 45 CFR Parts 160 and 164.

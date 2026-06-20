@@ -1,0 +1,48 @@
+CLINICAL DOCUMENT INTELLIGENCE AGENT — SAMPLE SESSION
+Date: June 20, 2026
+Document Ingested: patient_intake.txt (Mock clinical intake, MedCore Health System)
+Model: claude-haiku-4-5-20251001
+Chunks: 7
+
+============================================================
+
+QUERY 1:
+❓ What medications is the patient currently taking?
+
+💬 Answer:
+The patient is currently taking:
+1. Lisinopril 10mg — once daily (ACE inhibitor for hypertension/CHF)
+2. Metformin 1000mg — twice daily (for Type 2 Diabetes)
+3. Carvedilol 12.5mg — twice daily (beta blocker for CHF)
+4. Furosemide 40mg — once daily (diuretic for fluid retention)
+5. Atorvastatin 40mg — once daily (for hyperlipidemia)
+6. Aspirin 81mg — once daily (for cardiovascular protection)
+
+============================================================
+
+QUERY 2:
+❓ What allergies does the patient have?
+
+💬 Answer:
+The patient has two documented allergies:
+1. Penicillin: causes rash and hives
+2. Sulfa drugs: causes anaphylaxis (patient carries an EpiPen)
+
+============================================================
+
+QUERY 3:
+❓ What is the primary diagnosis and treatment plan?
+
+💬 Answer:
+Based on the context provided, the primary diagnosis is not explicitly stated 
+in this document. However, the chief complaint of increased shortness of breath, 
+fatigue, lower extremity swelling, and orthopnea over three weeks, combined with 
+a history of Congestive Heart Failure (CHF) diagnosed in 2019, suggests this 
+presentation is consistent with CHF exacerbation.
+
+NOTE: This response demonstrates correct RAG behavior — the agent declined to 
+hallucinate a treatment plan when the relevant chunk was not retrieved, instead 
+reasoning from available context. In a production system this would trigger a 
+re-retrieval pass with a refined query.
+
+============================================================

@@ -1,0 +1,80 @@
+MCP WEATHER INTELLIGENCE AGENT — SAMPLE SESSION
+Date: June 21, 2026
+System: Weather Intelligence Agent powered by MCP
+Model: claude-haiku-4-5-20251001
+Data Source: OpenWeatherMap API (real-time)
+MCP Tools Available: get_current_weather, get_forecast, compare_locations
+
+Demonstrates: Multi-city planning, activity recommendations, real-time API via MCP
+============================================================
+
+QUERY 1: I have meetings in Chicago Monday then flying to Miami Wednesday
+
+MCP Tools Called (2):
+→ get_forecast(Chicago)
+→ get_forecast(Miami)
+
+Answer:
+Here's what you're looking at:
+
+Chicago Monday (Jun 22): Overcast with rain expected, 76°F, high humidity (84%).
+Not ideal for outdoor activities, but fine for meetings. Bring an umbrella.
+
+Miami Wednesday (Jun 24) onward: Arriving during Miami's rainy season.
+Expect light rain and hot/humid conditions (87°F, 84°F low, 64% humidity).
+Typical tropical rain — usually brief showers, not all-day downpours.
+
+Recommendations:
+- Chicago Monday: Meetings will be fine. If you have outdoor plans, do them
+  Tuesday morning (Jun 23) when it clears up to 72°F and sunny.
+- Miami Wednesday onward: Pack light breathable clothes and a compact rain
+  jacket. Plan indoor activities 2-4pm when rain is most likely. Hit the
+  beach early morning or evening when it's cooler and rain is less likely.
+
+============================================================
+
+QUERY 2: I want to go to the DC Zoo. What day this week will have the best weather?
+
+MCP Tools Called (2):
+→ get_forecast(Washington, DC)
+→ get_forecast(Washington)
+
+Answer:
+Best day: Monday, June 22nd
+
+This is your winner for the DC Zoo. Here's why:
+- Clear skies — perfect for seeing the animals and enjoying outdoor exhibits
+- Low humidity (43%) — way more comfortable for walking around all day
+- Warm but not too hot — 83°F is ideal for zoo-going
+- No rain expected
+
+Second choice: Tuesday, June 23rd if Monday doesn't work
+- Still no rain, but slightly more humid and 3 degrees warmer
+- Still a solid zoo day
+
+Skip Wednesday, June 24th — light rain is forecasted and it'll be humid.
+
+Pro tip for Monday: Get there early (right when it opens) to beat crowds
+and catch animals when they're most active. The comfortable humidity means
+you won't be drained by midday!
+
+============================================================
+
+KEY INSIGHT FOR INTERVIEWERS:
+
+This project demonstrates Model Context Protocol (MCP) — the standard for
+connecting AI agents to external tools and real-time data sources.
+
+The agent does NOT just return weather data. It:
+1. Understands the user's actual goal (meetings, zoo visit, travel planning)
+2. Calls the appropriate weather tools via MCP during reasoning
+3. Reasons across multiple locations and timeframes simultaneously
+4. Returns a specific, actionable recommendation — not a weather report
+
+The same MCP architecture connects to any enterprise data source:
+ERP systems, logistics APIs, market data feeds, inventory systems,
+CRM platforms — whatever the business needs in real time.
+
+This is the pattern every enterprise AI system uses to stay current
+with live data rather than relying on static training data.
+============================================================

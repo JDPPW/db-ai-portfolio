@@ -1,17 +1,7 @@
-# Dujuan Brown — AI Engineer Portfolio
-
-**Iron Gate Solutions US LLC | Corp-to-Corp Available**  
-[LinkedIn](https://linkedin.com/in/dujuan-brown) | dujuanbrown@gmail.com
-
----
-
 ## Projects
 
 | Project | Domain | Key Skills | Status |
 |---|---|---|---|
 | [RAG Clinical Document Intelligence Agent](./rag-clinical-document-agent) | Healthcare | RAG, ChromaDB, LangChain, Claude | ✅ Live |
 | [Multi-Tenant Customer Service AI Agent](./multiagent-customer-service) | Enterprise Retail | LangGraph, FastAPI, RAG, Multi-tenant, Web UI | ✅ Live |
-
----
-
-*Built on IBM RAG and Agentic AI Professional Certificate — June 2026*
+| [Agentic RAG with Self-Correction Loop](./agentic-rag-self-correction) | Enterprise IT | LangGraph, Self-correction, Confidence scoring, FastAPI | ✅ Live |

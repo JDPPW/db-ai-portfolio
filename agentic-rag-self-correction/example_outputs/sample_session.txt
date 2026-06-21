@@ -1,0 +1,37 @@
+
+What is the password policy for privileged accounts?
+🔄 Self-correction enabled — up to 3 refinement loops
+Ask Agent
+Answer
+92%
+Confidence
+0
+Corrections
+✅ Answer (Confidence: 92%)
+
+
+# Password Policy for Privileged Accounts
+
+Based on the documentation, here is the complete password policy for privileged accounts:
+
+## Password Requirements
+- **Minimum length:** 16 characters
+- **Complexity:** Must include uppercase, lowercase, number, and special character
+- **Expiration:** 60 days (shorter than standard users who have 90 days)
+- **Password history:** Cannot reuse last 24 passwords
+
+## Multi-Factor Authentication (MFA)
+- **Required:** Yes, for all privileged accounts
+- **Method:** Hardware security key (YubiKey) is required — this is mandatory for privileged accounts (Microsoft Authenticator is the preferred option for standard users, but not sufficient for privileged access)
+
+## Credential Management
+- **Storage:** All admin credentials must be stored in the CyberArk vault (pam.techcore.internal)
+- **Access model:** Just-in-time access for production systems
+- **Session monitoring:** Session recording is enabled for all privileged sessions
+- **Review cycle:** Privileged access review conducted quarterly
+
+---
+*Sources: TechCore Enterprise Knowledge Base*
+*Grade: Answer directly addresses the question with specific technical requirements, named systems (CyberArk, YubiKey, pam.techcore.internal), concrete policies, and actionable details that enable an engineer to understand and implement the policy.*
+PASS
+Answer directly addresses the question with specific technical requirements, named systems (CyberArk, YubiKey, pam.techcore.internal), concrete policies, and actionable details that enable an engineer to understand and implement the policy.

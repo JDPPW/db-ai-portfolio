@@ -1,0 +1,117 @@
+SECURITY PROTOCOLS AND STANDARDS
+TechCore Enterprise IT — Information Security
+Version 5.1 | Last Updated: April 2024
+Classification: Confidential — IT Staff Only
+
+SECURITY FRAMEWORK
+TechCore follows NIST Cybersecurity Framework (CSF) 2.0 as primary standard.
+Compliance requirements: SOC 2 Type II, ISO 27001, HIPAA (for healthcare clients)
+Annual penetration testing: Conducted by Bishop Fox (contract #BF-2024-0847)
+Security awareness training: Required quarterly for all staff via KnowBe4
+
+ACCESS CONTROL STANDARDS
+
+PASSWORD POLICY
+Minimum length: 16 characters
+Complexity: Must include uppercase, lowercase, number, special character
+Expiration: 90 days for standard users, 60 days for privileged accounts
+History: Cannot reuse last 24 passwords
+MFA: Required for all accounts — Microsoft Authenticator preferred
+Privileged accounts: Hardware security key (YubiKey) required
+
+PRIVILEGED ACCESS MANAGEMENT
+PAM Solution: CyberArk (pam.techcore.internal)
+All admin credentials stored in CyberArk vault
+Just-in-time access for production systems
+Session recording enabled for all privileged sessions
+Privileged access review: Quarterly
+
+ZERO TRUST ARCHITECTURE
+TechCore implements Zero Trust principles:
+- Never trust, always verify
+- Least privilege access
+- Assume breach mentality
+- All traffic encrypted in transit
+Identity provider: Microsoft Entra ID (Azure AD)
+Conditional access policies enforced for all applications
+Device compliance required before network access granted
+
+ENDPOINT SECURITY
+
+STANDARD ENDPOINT CONFIGURATION
+EDR: CrowdStrike Falcon (required on all endpoints)
+Patch management: Automated via Microsoft Intune — critical patches within 24 hours
+Encryption: BitLocker (Windows), FileVault (Mac) — required on all devices
+USB control: Blocked by default, exceptions require security team approval
+Application whitelisting: Enforced via CrowdStrike
+
+MOBILE DEVICE MANAGEMENT
+MDM Solution: Microsoft Intune
+Personal devices: BYOD allowed with Intune enrollment
+Corporate data: Containerized via Microsoft Intune MAM
+Remote wipe: Enabled for all enrolled devices
+Lost or stolen device: Report immediately to security@techcore.com
+
+NETWORK SECURITY
+
+FIREWALL STANDARDS
+Edge firewalls: Palo Alto Networks PA-5220 (redundant pair)
+Internal segmentation: Palo Alto VM-Series
+Default deny all inbound — explicit allow rules only
+All firewall changes require change ticket and security review
+Annual firewall rule review and cleanup
+
+NETWORK SEGMENTATION
+Production network: 10.0.0.0/8
+Management network: 172.16.0.0/12 (isolated, no internet access)
+DMZ: 192.168.1.0/24
+Guest WiFi: Isolated VLAN, internet only, no internal access
+IoT devices: Separate VLAN, strict egress filtering
+
+VULNERABILITY MANAGEMENT
+Scanner: Tenable Nessus (scans run weekly)
+Critical vulnerabilities: Remediate within 24 hours
+High vulnerabilities: Remediate within 7 days
+Medium vulnerabilities: Remediate within 30 days
+Low vulnerabilities: Remediate within 90 days
+Exception process: Requires CISO approval and compensating controls
+
+DATA CLASSIFICATION
+
+CLASSIFICATION LEVELS
+Public: Marketing materials, press releases
+Internal: General business information, policies
+Confidential: Customer data, financial records, employee PII
+Restricted: Legal documents, M&A information, security configurations
+
+HANDLING REQUIREMENTS
+Confidential data: Encrypted at rest and in transit, access logging required
+Restricted data: Encrypted, strict need-to-know access, DLP monitoring active
+Data retention: 7 years financial, 5 years HR, 3 years general business
+Data destruction: DoD 5220.22-M standard for media disposal
+
+ENCRYPTION STANDARDS
+Data in transit: TLS 1.3 minimum (TLS 1.0 and 1.1 disabled)
+Data at rest: AES-256
+Key management: AWS KMS for cloud, CyberArk for on-premises
+Certificate management: DigiCert (auto-renewal via ACME protocol)
+
+SECURITY MONITORING
+
+SIEM AND LOGGING
+SIEM: Splunk Enterprise Security
+Log retention: 90 days hot, 1 year warm, 7 years cold (S3 Glacier)
+Log sources: All firewalls, servers, cloud services, endpoints, applications
+Alert response SLA: Critical 15 minutes, High 1 hour, Medium 4 hours
+
+THREAT INTELLIGENCE
+Feeds: CrowdStrike Intel, CISA alerts, FS-ISAC
+Threat hunting: Weekly proactive hunts by SOC team
+IOC management: Automated blocking via CrowdStrike and Palo Alto
+
+SECURITY CONTACTS
+CISO: James Okafor | j.okafor@techcore.com | +1-555-0191
+SOC Manager: Lisa Chang | l.chang@techcore.com
+Security Incidents: security@techcore.com | +1-800-555-0194 (24/7)
+Vulnerability Reports: vulnreport@techcore.com
+External Pen Test: Bishop Fox | contact@bishopfox.com

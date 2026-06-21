@@ -1,0 +1,97 @@
+INCIDENT RESPONSE PLAYBOOK
+TechCore Enterprise IT — Security Operations Center
+Version 2.8 | Last Updated: February 2024
+Classification: Confidential — SOC Use Only
+
+INCIDENT SEVERITY LEVELS
+
+SEV-1: Critical
+Definition: Complete service outage affecting all users or security breach in progress
+Response Time: Immediate — all hands on deck
+Examples: Data center down, ransomware detected, complete internet outage
+Actions: Activate war room, notify C-suite within 15 minutes, engage all Tier 3 teams
+
+SEV-2: High
+Definition: Major service degradation affecting 25% or more of users
+Response Time: Within 15 minutes
+Examples: Core application down, major VPN failure, database cluster failure
+Actions: Notify IT Director, engage relevant Tier 2 and Tier 3 teams
+
+SEV-3: Medium
+Definition: Service degradation affecting specific teams or locations
+Response Time: Within 1 hour
+Examples: Single office outage, application slowness, printer failures
+Actions: Standard ticket escalation, notify team leads
+
+SEV-4: Low
+Definition: Minor issues affecting individual users
+Response Time: Within 4 hours during business hours
+Examples: Single user connectivity, password resets, software installs
+
+INCIDENT RESPONSE PROCEDURES
+
+RANSOMWARE DETECTION AND RESPONSE
+Indicators: Encrypted files with unknown extensions, ransom notes appearing, antivirus alerts
+Immediate Actions (First 15 Minutes):
+1. ISOLATE affected systems immediately — disconnect from network
+2. Do NOT restart or shut down affected systems (preserves forensic evidence)
+3. Activate SEV-1 protocol — call NOC hotline immediately
+4. Notify CISO: James Okafor | j.okafor@techcore.com | +1-555-0191
+5. Preserve all logs — do not clear event logs
+6. Identify patient zero — first infected system
+7. Check backup integrity — do not restore yet
+Recovery Steps:
+1. Engage incident response vendor: CrowdStrike IR | 1-877-934-2210
+2. Determine blast radius — how many systems affected
+3. Restore from known good backup after environment is clean
+4. Conduct post-incident review within 72 hours
+Escalation: CEO and Legal must be notified within 1 hour of confirmed ransomware
+
+DATA BREACH RESPONSE
+Triggers: Unauthorized data access detected, data exfiltration alerts, insider threat indicators
+Immediate Actions:
+1. Preserve evidence — capture logs, screenshots, network captures
+2. Identify scope — what data, how much, how long
+3. Revoke compromised credentials immediately
+4. Notify CISO and Legal within 30 minutes
+5. Determine if breach is reportable under GDPR/HIPAA/state laws
+Notification Requirements:
+- GDPR: 72 hours to supervisory authority if EU data involved
+- HIPAA: 60 days to HHS if PHI involved
+- State breach laws: varies by state, typically 30-72 hours
+Legal Contact: General Counsel | legal@techcore.com | +1-555-0192
+
+DDOS ATTACK RESPONSE
+Indicators: Sudden spike in traffic, service unavailability, ISP alerts
+Immediate Actions:
+1. Confirm attack via traffic analysis — rule out legitimate spike
+2. Contact ISP for upstream filtering: AT&T Security | 1-800-555-0199
+3. Enable Cloudflare DDoS protection if not already active
+4. Implement rate limiting on edge devices
+5. Activate anycast routing if available
+Mitigation Tools: Cloudflare Magic Transit, AWS Shield Advanced
+Expected Mitigation Time: 15-60 minutes depending on attack vector
+
+UNAUTHORIZED ACCESS RESPONSE
+Triggers: Failed login threshold exceeded, after-hours access, impossible travel alerts
+Immediate Actions:
+1. Disable compromised account immediately — do not alert the user first
+2. Review access logs for last 30 days
+3. Check for lateral movement indicators
+4. Preserve authentication logs
+5. Engage SOC analyst for full investigation
+6. Re-enable account only after investigation complete and password reset
+
+POST-INCIDENT REQUIREMENTS
+All SEV-1 and SEV-2 incidents require:
+- Incident timeline document within 24 hours
+- Root cause analysis within 72 hours
+- Lessons learned document within 1 week
+- Change request if configuration change required
+
+TOOLS AND RESOURCES
+SIEM Platform: Splunk Enterprise (splunk.techcore.internal)
+EDR Platform: CrowdStrike Falcon
+Vulnerability Scanner: Tenable Nessus
+Ticketing System: ServiceNow (snow.techcore.internal)
+War Room: Conference Bridge +1-800-555-0195 PIN: 8847#

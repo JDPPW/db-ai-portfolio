@@ -1,0 +1,135 @@
+CLOUD INFRASTRUCTURE GUIDE
+TechCore Enterprise IT — Cloud Operations
+Version 3.1 | Last Updated: March 2024
+Classification: Internal Use Only
+
+CLOUD ENVIRONMENT OVERVIEW
+TechCore operates across two primary cloud providers:
+- AWS: Primary cloud (us-east-1, us-west-2)
+- Google Cloud Platform: Secondary cloud (us-central1, us-east4)
+All production workloads require high availability across minimum two regions.
+
+AWS ENVIRONMENT
+
+ACCOUNT STRUCTURE
+Production Account ID: 123456789012
+Staging Account ID: 123456789013
+Development Account ID: 123456789014
+Shared Services Account ID: 123456789015
+
+KEY SERVICES IN USE
+Compute: EC2 (m5.xlarge standard), ECS Fargate, Lambda
+Database: RDS PostgreSQL (db.r5.large), DynamoDB, ElastiCache Redis
+Storage: S3 (versioning enabled all buckets), EFS for shared storage
+Networking: VPC per environment, Transit Gateway for inter-VPC routing
+Security: IAM, KMS, Secrets Manager, GuardDuty, Security Hub
+AI/ML: Amazon Bedrock, SageMaker for model training
+
+COMMON AWS ISSUES AND RESOLUTIONS
+
+ISSUE: EC2 Instance Unreachable
+Symptoms: SSH timeout, application not responding, health checks failing
+Resolution Steps:
+1. Check instance status in AWS Console — verify running state
+2. Review system logs via EC2 console (Actions > Monitor > Get System Log)
+3. Check security group rules — verify port 22 or 443 is open from bastion
+4. Verify NACL rules are not blocking traffic
+5. Check if instance passed both status checks
+6. If status checks failing — stop/start instance (not reboot) to move to new host
+7. If EBS volume issue — detach and attach to recovery instance
+Expected Resolution Time: 15-30 minutes
+Escalation: cloud-ops@techcore.com
+
+ISSUE: RDS Database Connection Failures
+Symptoms: Application throwing connection timeout errors, database unreachable
+Resolution Steps:
+1. Check RDS instance status in AWS Console
+2. Verify security group allows inbound 5432 from application servers
+3. Check parameter group for max_connections setting
+4. Review CloudWatch metrics for CPU, memory, IOPS
+5. Check for ongoing maintenance window activity
+6. Verify database credentials in Secrets Manager are current
+7. Check read replica lag if using read replicas
+Expected Resolution Time: 20-45 minutes
+Escalation: dba-team@techcore.com
+
+ISSUE: Lambda Function Failures
+Symptoms: Function errors in CloudWatch, timeout errors, out of memory
+Resolution Steps:
+1. Check CloudWatch Logs for specific error messages
+2. Review function timeout setting — increase if timing out
+3. Check memory allocation — increase if out of memory errors
+4. Verify IAM role has required permissions
+5. Check VPC configuration if function needs private resource access
+6. Review concurrent execution limits
+7. Check dead letter queue for failed invocations
+Expected Resolution Time: 15-30 minutes
+
+ISSUE: S3 Access Denied Errors
+Symptoms: Application cannot read or write to S3, 403 errors in logs
+Resolution Steps:
+1. Check bucket policy for explicit deny rules
+2. Verify IAM role/user has s3:GetObject and s3:PutObject permissions
+3. Check if bucket has public access blocked — verify intended
+4. Review S3 access logs for specific request details
+5. Check if KMS encryption key policy allows access
+6. Verify correct AWS region endpoint being used
+Expected Resolution Time: 15-30 minutes
+
+GOOGLE CLOUD PLATFORM ENVIRONMENT
+
+KEY SERVICES IN USE
+Compute: GKE (Autopilot mode), Cloud Run, Cloud Functions
+Database: Cloud SQL PostgreSQL, Firestore, Memorystore Redis
+Storage: Cloud Storage (uniform bucket-level access enabled)
+Networking: Shared VPC, Cloud Armor for WAF
+AI/ML: Vertex AI, Gemini API, BigQuery ML
+Monitoring: Cloud Monitoring, Cloud Logging, Error Reporting
+
+COMMON GCP ISSUES AND RESOLUTIONS
+
+ISSUE: Cloud Run Service Unavailable
+Symptoms: 503 errors, service not responding, deployment failed
+Resolution Steps:
+1. Check Cloud Run service status in GCP Console
+2. Review deployment logs for container startup errors
+3. Verify container image exists in Artifact Registry
+4. Check memory and CPU limits — increase if OOM errors
+5. Review minimum instances setting for cold start issues
+6. Check VPC connector if service needs private resource access
+7. Verify service account has required permissions
+Expected Resolution Time: 15-30 minutes
+Escalation: cloud-ops@techcore.com
+
+ISSUE: GKE Pod Crashes
+Symptoms: Pods in CrashLoopBackOff, OOMKilled, service degraded
+Resolution Steps:
+1. kubectl describe pod <pod-name> for events and status
+2. kubectl logs <pod-name> --previous for crash logs
+3. Check resource requests and limits — increase memory if OOMKilled
+4. Verify ConfigMaps and Secrets are correctly mounted
+5. Check liveness and readiness probe configuration
+6. Review node resource availability — kubectl describe nodes
+7. Check for node pool autoscaling limits
+Expected Resolution Time: 20-45 minutes
+
+COST MANAGEMENT
+Monthly Budget Alerts: Set at 80% and 100% of budget
+AWS Cost Anomaly Detection: Enabled, alerts to cloud-ops@techcore.com
+GCP Budget Alerts: Configured in Billing console
+FinOps Review: Monthly, first Tuesday, 2PM Central
+Tagging Requirements: All resources must have: Environment, Team, Project, CostCenter tags
+
+CLOUD GOVERNANCE
+All cloud changes require:
+- Change ticket in ServiceNow
+- Peer review for production changes
+- Architecture review for new services
+- Security review for public-facing services
+Terraform required for all infrastructure changes — no manual console changes in production
+
+CONTACT DIRECTORY
+Cloud Operations: cloud-ops@techcore.com | +1-800-555-0193
+AWS Account Manager: Jennifer Park | jennifer.park@aws.com
+GCP Customer Engineer: David Liu | david.liu@google.com
+FinOps Lead: Rachel Torres | r.torres@techcore.com

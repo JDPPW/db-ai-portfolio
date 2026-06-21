@@ -1,0 +1,13 @@
+anthropic
+langchain
+langchain-anthropic
+langchain-chroma
+langchain-community
+langchain-text-splitters
+langgraph
+chromadb
+fastapi
+uvicorn
+python-dotenv
+pypdf
+jinja2

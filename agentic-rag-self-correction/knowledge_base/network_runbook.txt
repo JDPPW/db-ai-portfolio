@@ -1,0 +1,80 @@
+ENTERPRISE NETWORK OPERATIONS RUNBOOK
+TechCore Enterprise IT — Internal Documentation
+Version 4.2 | Last Updated: January 2024
+Classification: Internal Use Only
+
+NETWORK ARCHITECTURE OVERVIEW
+TechCore operates a hybrid cloud network spanning on-premises data centers
+in Dallas, Atlanta, and Chicago, connected to AWS us-east-1 and us-west-2
+regions via dedicated AWS Direct Connect circuits (10Gbps redundant).
+
+COMMON NETWORK ISSUES AND RESOLUTIONS
+
+ISSUE: Complete Network Outage — Building or Floor Level
+Symptoms: Multiple users reporting no connectivity, ping to gateway fails
+Resolution Steps:
+1. Check core switch status in NOC dashboard (dashboard.techcore.internal)
+2. Verify uplink ports on distribution switches are active
+3. Check for spanning tree topology changes in switch logs
+4. Restart access layer switches if spanning tree loop detected
+5. Escalate to Tier 3 Network Engineering if not resolved in 15 minutes
+Expected Resolution Time: 15-30 minutes
+Escalation Contact: network-oncall@techcore.com | +1-800-555-0190
+
+ISSUE: Intermittent Packet Loss
+Symptoms: Users report slow speeds, video calls dropping, ping shows 5-15% loss
+Resolution Steps:
+1. Run continuous ping test to default gateway and core router
+2. Check interface error counters on access and distribution switches
+3. Look for duplex mismatches on affected ports
+4. Check for high CPU utilization on network devices
+5. Review QoS policies if specific traffic types are affected
+Expected Resolution Time: 30-60 minutes
+Escalation Contact: network-oncall@techcore.com
+
+ISSUE: VPN Connectivity Failures
+Symptoms: Remote users cannot connect, VPN client shows authentication error
+Resolution Steps:
+1. Check Cisco ASA firewall status — primary: fw-dal-01, secondary: fw-dal-02
+2. Verify RADIUS authentication server is reachable (radius.techcore.internal)
+3. Check Active Directory connectivity from RADIUS server
+4. Review VPN tunnel logs for specific error codes
+5. Test with known good credentials to isolate user vs system issue
+Common Error Codes:
+- Error 619: Check firewall rules for UDP 1194
+- Error 800: Verify IKE negotiation settings
+- Error 691: Authentication failure — check AD account status
+Expected Resolution Time: 20-45 minutes
+Escalation Contact: security-team@techcore.com
+
+ISSUE: DNS Resolution Failures
+Symptoms: Users can ping IP addresses but not hostnames, websites not loading
+Resolution Steps:
+1. Check primary DNS servers: dns1.techcore.internal (10.0.1.10), dns2.techcore.internal (10.0.1.11)
+2. Verify DNS service is running on both servers
+3. Test resolution from multiple locations to isolate scope
+4. Check DNS forwarders for external resolution
+5. Review recent DNS zone changes in change management system
+Expected Resolution Time: 15-30 minutes
+
+ISSUE: BGP Route Flapping
+Symptoms: Intermittent connectivity to specific external destinations, NOC alerts firing
+Resolution Steps:
+1. Check BGP neighbor status on core routers (core-rtr-dal-01, core-rtr-dal-02)
+2. Review BGP logs for route withdrawal and re-advertisement patterns
+3. Check physical connectivity on WAN circuits
+4. Contact ISP if circuit-level issue suspected
+5. Implement route dampening if flapping persists
+Expected Resolution Time: 30-90 minutes
+Escalation: Immediate escalation to Tier 3 required
+
+MAINTENANCE WINDOWS
+Standard: Saturday 11PM - Sunday 3AM Central
+Emergency: Requires VP of Infrastructure approval
+Change Freeze: Last two weeks of December annually
+
+CONTACT DIRECTORY
+NOC 24/7 Hotline: +1-800-555-0190
+Network Engineering Lead: Sarah Chen | s.chen@techcore.com
+Infrastructure VP: Marcus Webb | m.webb@techcore.com
+ISP Circuit Issues: AT&T NOC 1-800-555-0199 | Circuit ID: ATTC-DAL-8847

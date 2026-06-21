@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TechCore IT Knowledge Agent</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: #0f1117;
+    color: #e0e0e0;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  #header {
+    background: #1a1f2e;
+    border-bottom: 1px solid #2a3040;
+    padding: 16px 32px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  #header h1 {
+    font-size: 18px;
+    font-weight: 600;
+    color: #ffffff;
+  }
+
+  #header p {
+    font-size: 12px;
+    color: #6b7280;
+    margin-top: 2px;
+  }
+
+  .status-badge {
+    background: #0d2918;
+    color: #10b981;
+    border: 1px solid #10b981;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 500;
+  }
+
+  #main {
+    flex: 1;
+    max-width: 900px;
+    margin: 0 auto;
+    width: 100%;
+    padding: 32px 24px;
+  }
+
+  .intro {
+    background: #1a1f2e;
+    border: 1px solid #2a3040;
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 24px;
+  }
+
+  .intro h2 {
+    font-size: 16px;
+    font-weight: 600;
+    color: #ffffff;
+    margin-bottom: 8px;
+  }
+
+  .intro p {
+    font-size: 13px;
+    color: #9ca3af;
+    line-height: 1.6;
+    margin-bottom: 12px;
+  }
+
+  .example-questions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .example-btn {
+    background: #0f1117;
+    border: 1px solid #2a3040;
+    color: #9ca3af;
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 12px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .example-btn:hover {
+    border-color: #3b82f6;
+    color: #3b82f6;
+  }
+
+  #query-box {
+    background: #1a1f2e;
+    border: 1px solid #2a3040;
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 24px;
+  }
+
+  #question-input {
+    width: 100%;
+    background: #0f1117;
+    border: 1px solid #2a3040;
+    border-radius: 8px;
+    color: #e0e0e0;
+    font-size: 14px;
+    padding: 12px 16px;
+    resize: vertical;
+    min-height: 80px;
+    font-family: inherit;
+    outline: none;
+    transition: border-color 0.2s;
+    margin-bottom: 12px;
+  }
+
+  #question-input:focus {
+    border-color: #3b82f6;
+  }
+
+  #question-input::placeholder {
+    color: #4b5563;
+  }
+
+  .query-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .self-correction-info {
+    font-size: 12px;
+    color: #6b7280;
+  }
+
+  #ask-btn {
+    background: #3b82f6;
+    color: white;
+    border: none;
+    padding: 10px 24px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+
+  #ask-btn:hover { background: #2563eb; }
+  #ask-btn:disabled { background: #374151; cursor: not-allowed; }
+
+  #results { display: none; }
+
+  .result-card {
+    background: #1a1f2e;
+    border: 1px solid #2a3040;
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 16px;
+  }
+
+  .result-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 16px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid #2a3040;
+  }
+
+  .result-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: #ffffff;
+  }
+
+  .metrics {
+    display: flex;
+    gap: 12px;
+  }
+
+  .metric {
+    background: #0f1117;
+    border: 1px solid #2a3040;
+    border-radius: 8px;
+    padding: 8px 12px;
+    text-align: center;
+  }
+
+  .metric-value {
+    font-size: 20px;
+    font-weight: 700;
+    display: block;
+  }
+
+  .metric-label {
+    font-size: 10px;
+    color: #6b7280;
+    display: block;
+    margin-top: 2px;
+  }
+
+  .confidence-high { color: #10b981; }
+  .confidence-mid { color: #f59e0b; }
+  .confidence-low { color: #ef4444; }
+
+  .answer-content {
+    font-size: 14px;
+    line-height: 1.8;
+    color: #d1d5db;
+    white-space: pre-wrap;
+  }
+
+  .grade-bar {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 16px;
+    padding-top: 16px;
+    border-top: 1px solid #2a3040;
+    font-size: 12px;
+    color: #6b7280;
+  }
+
+  .grade-pass {
+    background: #0d2918;
+    color: #10b981;
+    border: 1px solid #10b981;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 11px;
+  }
+
+  .grade-fail {
+    background: #2d1515;
+    color: #ef4444;
+    border: 1px solid #ef4444;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 11px;
+  }
+
+  .grade-escalate {
+    background: #2d2015;
+    color: #f59e0b;
+    border: 1px solid #f59e0b;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 11px;
+  }
+
+  .correction-flow {
+    background: #0f1117;
+    border: 1px solid #2a3040;
+    border-radius: 8px;
+    padding: 12px 16px;
+    margin-bottom: 16px;
+    font-size: 12px;
+    color: #6b7280;
+  }
+
+  .correction-flow strong {
+    color: #f59e0b;
+  }
+
+  .loading {
+    text-align: center;
+    padding: 40px;
+    color: #6b7280;
+  }
+
+  .loading-dots span {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    background: #3b82f6;
+    border-radius: 50%;
+    margin: 0 3px;
+    animation: pulse 1.2s infinite;
+  }
+
+  .loading-dots span:nth-child(2) { animation-delay: 0.2s; }
+  .loading-dots span:nth-child(3) { animation-delay: 0.4s; }
+
+  @keyframes pulse {
+    0%, 60%, 100% { transform: scale(0.8); opacity: 0.4; }
+    30% { transform: scale(1.2); opacity: 1; }
+  }
+
+  .loading-steps {
+    margin-top: 12px;
+    font-size: 12px;
+  }
+
+  .loading-step {
+    margin: 4px 0;
+    color: #4b5563;
+  }
+
+  .loading-step.active {
+    color: #3b82f6;
+  }
+</style>
+</head>
+<body>
+
+<div id="header">
+  <div>
+    <h1>TechCore IT Knowledge Agent</h1>
+    <p>Agentic RAG with Self-Correction | Enterprise IT Support Intelligence</p>
+  </div>
+  <span class="status-badge">● Self-Correction Active</span>
+</div>
+
+<div id="main">
+  <div class="intro">
+    <h2>How This Agent Works</h2>
+    <p>Unlike standard search, this agent evaluates its own answer quality before 
+    returning a response. If the answer isn't grounded in documentation or lacks 
+    actionable detail, the agent rewrites its query and searches again — up to 3 
+    times — before escalating to a human specialist.</p>
+    <p>Try asking a technical IT question:</p>
+    <div class="example-questions">
+      <button class="example-btn" onclick="useExample(this)">VPN connection failing with error 691</button>
+      <button class="example-btn" onclick="useExample(this)">EC2 instance unreachable after deployment</button>
+      <button class="example-btn" onclick="useExample(this)">How do I respond to a ransomware detection?</button>
+      <button class="example-btn" onclick="useExample(this)">DNS resolution failing for internal hostnames</button>
+      <button class="example-btn" onclick="useExample(this)">GKE pods in CrashLoopBackOff</button>
+      <button class="example-btn" onclick="useExample(this)">What is the password policy for privileged accounts?</button>
+    </div>
+  </div>
+
+  <div id="query-box">
+    <textarea 
+      id="question-input" 
+      placeholder="Ask a technical IT question... (e.g. 'How do I troubleshoot BGP route flapping?')"
+    ></textarea>
+    <div class="query-actions">
+      <span class="self-correction-info">
+        🔄 Self-correction enabled — up to 3 refinement loops
+      </span>
+      <button id="ask-btn" onclick="askQuestion()">Ask Agent</button>
+    </div>
+  </div>
+
+  <div id="results"></div>
+</div>
+
+<script>
+  function useExample(btn) {
+    document.getElementById('question-input').value = btn.textContent;
+  }
+
+  async function askQuestion() {
+    const question = document.getElementById('question-input').value.trim();
+    if (!question) return;
+
+    const resultsDiv = document.getElementById('results');
+    const btn = document.getElementById('ask-btn');
+
+    btn.disabled = true;
+    resultsDiv.style.display = 'block';
+    resultsDiv.innerHTML = `
+      <div class="loading">
+        <div class="loading-dots">
+          <span></span><span></span><span></span>
+        </div>
+        <div class="loading-steps">
+          <div class="loading-step active">⟳ Retrieving relevant documentation...</div>
+          <div class="loading-step">⟳ Generating answer...</div>
+          <div class="loading-step">⟳ Grading answer quality...</div>
+          <div class="loading-step">⟳ Self-correction loop (if needed)...</div>
+        </div>
+      </div>
+    `;
+
+    try {
+      const response = await fetch('/ask', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ question })
+      });
+
+      const data = await response.json();
+      displayResult(question, data);
+
+    } catch (error) {
+      resultsDiv.innerHTML = `
+        <div class="result-card">
+          <p style="color: #ef4444;">Connection error. Please try again.</p>
+        </div>
+      `;
+    }
+
+    btn.disabled = false;
+  }
+
+  function displayResult(question, data) {
+    const resultsDiv = document.getElementById('results');
+
+    const confidenceClass = data.confidence_score >= 80 
+      ? 'confidence-high' 
+      : data.confidence_score >= 50 
+        ? 'confidence-mid' 
+        : 'confidence-low';
+
+    const gradeClass = data.grade === 'pass' 
+      ? 'grade-pass' 
+      : data.grade === 'escalate' 
+        ? 'grade-escalate' 
+        : 'grade-fail';
+
+    const correctionNote = data.correction_count > 0 
+      ? `<div class="correction-flow">
+          <strong>⟳ Self-correction triggered ${data.correction_count} time(s)</strong> — 
+          The agent rewrote its search query to find better documentation before returning this answer.
+         </div>`
+      : '';
+
+    resultsDiv.innerHTML = `
+      ${correctionNote}
+      <div class="result-card">
+        <div class="result-header">
+          <span class="result-title">Answer</span>
+          <div class="metrics">
+            <div class="metric">
+              <span class="metric-value ${confidenceClass}">${data.confidence_score}%</span>
+              <span class="metric-label">Confidence</span>
+            </div>
+            <div class="metric">
+              <span class="metric-value" style="color: #f59e0b;">${data.correction_count}</span>
+              <span class="metric-label">Corrections</span>
+            </div>
+          </div>
+        </div>
+        <div class="answer-content">${data.answer.replace(/\n/g, '<br>')}</div>
+        <div class="grade-bar">
+          <span class="${gradeClass}">${data.grade.toUpperCase()}</span>
+          <span>${data.grade_reason}</span>
+        </div>
+      </div>
+    `;
+  }
+
+  document.getElementById('question-input').addEventListener('keydown', function(e) {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      askQuestion();
+    }
+  });
+</script>
+</body>
+</html>

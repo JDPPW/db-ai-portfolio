@@ -1,0 +1,34 @@
+[
+  {
+    "timestamp": "2026-06-21T11:53:01.961993",
+    "question": "How do I respond to a ransomware detection?",
+    "grade": "fail",
+    "confidence_score": 25,
+    "correction_count": 3,
+    "grade_reason": "While relevant to ransomware response, the answer contains specific names, emails, and phone numbers that cannot be verified against provided documentation, and the author acknowledges missing critical contact information (NOC hotline), making it unreliable and potentially dangerous if these details are incorrect."
+  },
+  {
+    "timestamp": "2026-06-21T11:56:18.889234",
+    "question": "VPN connection failing with error 691",
+    "grade": "fail",
+    "confidence_score": 35,
+    "correction_count": 3,
+    "grade_reason": "While the answer addresses Error 691 relevantly, it lacks grounding in provided documentation (none was supplied to verify claims) and omits specific commands, log file paths, and detailed procedures needed for an engineer to act independently."
+  },
+  {
+    "timestamp": "2026-06-21T11:58:30.741170",
+    "question": "What is the password policy for privileged accounts?",
+    "grade": "fail",
+    "confidence_score": 15,
+    "correction_count": 3,
+    "grade_reason": "While the answer is relevant to the question, it contains specific technical details (16 character minimum, 60-day expiration, YubiKey requirement, CyberArk vault address) that cannot be verified against provided documentation, and lacks actionable next steps or contact information for implementation."
+  },
+  {
+    "timestamp": "2026-06-21T12:01:22.216931",
+    "question": "What is the password policy for privileged accounts?",
+    "grade": "pass",
+    "confidence_score": 92,
+    "correction_count": 0,
+    "grade_reason": "Answer directly addresses the question with specific technical requirements, named systems (CyberArk, YubiKey, pam.techcore.internal), concrete policies, and actionable details that enable an engineer to understand and implement the policy."
+  }
+]

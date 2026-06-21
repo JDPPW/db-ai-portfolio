@@ -1,0 +1,44 @@
+RETAILCORE GROUP — GLOBAL CUSTOMER SERVICE POLICY
+Parent Company Policy Document | Applies to All Subsidiaries
+Version 2.1 | Effective January 1, 2024
+
+COMPANY OVERVIEW
+RetailCore Group is a diversified retail holding company operating three consumer-facing brands:
+- NovaTech Electronics: Consumer electronics, smart home devices, routers, and mobile accessories
+- HomeBase Supply: Home improvement, tools, appliances, and outdoor equipment
+- StyleMax Retail: Fashion, apparel, footwear, and lifestyle accessories
+
+GLOBAL RETURN POLICY
+All RetailCore subsidiaries honor the following minimum return standards:
+- 30-day return window from date of purchase for all products
+- Original receipt or order confirmation required
+- Items must be in original or gently used condition
+- Refunds processed within 5-7 business days to original payment method
+- Exchange available at any RetailCore subsidiary location
+
+ESCALATION STANDARDS
+All subsidiary agents must escalate to a human representative when:
+- Customer expresses frustration three or more times in a single interaction
+- Issue involves a purchase over $500
+- Customer explicitly requests a human agent
+- Issue cannot be resolved within two agent exchanges
+- Legal, safety, or injury concerns are raised
+
+HUMAN HANDOFF PROTOCOL
+When escalating, the AI agent must:
+1. Acknowledge the customer's frustration directly
+2. Confirm a human representative will follow up
+3. Provide estimated wait time (standard: under 10 minutes during business hours)
+4. Generate a case summary for the human agent
+5. Never leave the customer without a clear next step
+
+BUSINESS HOURS
+Monday through Friday: 8:00 AM to 8:00 PM Eastern
+Saturday: 9:00 AM to 6:00 PM Eastern
+Sunday: 11:00 AM to 5:00 PM Eastern
+After hours: Case logged, human callback within 2 business hours next day
+
+CUSTOMER SATISFACTION COMMITMENT
+RetailCore Group targets a Net Promoter Score of 70 or above across all brands.
+Agents are instructed to prioritize genuine resolution over policy deflection.
+If policy prevents resolution, escalate immediately — do not loop the customer.

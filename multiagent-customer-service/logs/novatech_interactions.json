@@ -1,0 +1,42 @@
+[
+  {
+    "timestamp": "2026-06-21T09:56:49.169434",
+    "brand": "NovaTech Electronics",
+    "customer_message": "My router stopped working this morning and I need it fixed today",
+    "decision": "clarify",
+    "response": "I'd be happy to help! **When did you last successfully use the router, and have you tried unplugging it for 30 seconds and plugging it back in?**",
+    "exchange_count": 1
+  },
+  {
+    "timestamp": "2026-06-21T09:57:37.565511",
+    "brand": "NovaTech Electronics",
+    "customer_message": "It was working fine yesterday. Yes I tried unplugging it and it still won't connect.",
+    "decision": "clarify",
+    "response": "I'd be happy to help! What device isn't connecting \u2013 is it a printer, router, monitor, or something else?",
+    "exchange_count": 2
+  },
+  {
+    "timestamp": "2026-06-21T10:20:25.662338",
+    "brand": "NovaTech Electronics",
+    "customer_message": "I'm having troubles with my router",
+    "decision": "clarify",
+    "response": "Hi there! I'd be happy to help you with your router. \n\n**What specific issue are you experiencing?** (For example: no internet connection, slow speeds, won't turn on, etc.)",
+    "exchange_count": 1
+  },
+  {
+    "timestamp": "2026-06-21T10:20:55.874085",
+    "brand": "NovaTech Electronics",
+    "customer_message": "it was working fine yesterday and all I have right now is a red light and I keep doing the reset and nothing fixes it",
+    "decision": "clarify",
+    "response": "Thanks for that detail! A red light usually indicates a connection issue. **Is your modem (the device that connects to your internet provider) powered on and showing a normal light?**",
+    "exchange_count": 2
+  },
+  {
+    "timestamp": "2026-06-21T10:22:03.758645",
+    "brand": "NovaTech Electronics",
+    "customer_message": "yes, the modem is working fine. I also reset that as well it came back on the light is green. I followed all the steps on the website to fix the router. All the connections are made. I just reset it again and now it won't power on.",
+    "decision": "escalate",
+    "response": "I completely understand your frustration\u2014you've done everything right, and now the router won't even power on after multiple resets. That's definitely concerning, and I appreciate your patience in troubleshooting.\n\n**At this point, you need to speak with one of our technical specialists who can look into this further.** This sounds like it may be a hardware issue that requires hands-on support.\n\nHere's how to reach us:\n\n\ud83d\udcde **Call 1-800-RETAILCORE** and reference your router issue, or if you prefer, **we'll have a human representative call you back within 10 minutes** (during business hours).\n\nOur team will be able to walk you through any remaining options or discuss a replacement if needed. You shouldn't have to keep troubleshooting on your own at this point.\n\nIs there anything else I can note for the representative before they contact you?",
+    "exchange_count": 3
+  }
+]

@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RetailCore Customer Service</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: #f5f5f5;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  #header {
+    background: #1a1a2e;
+    color: white;
+    padding: 16px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  #header h1 { font-size: 18px; font-weight: 600; }
+  #header p { font-size: 12px; opacity: 0.7; margin-top: 2px; }
+
+  #brand-bar {
+    background: white;
+    padding: 12px 24px;
+    border-bottom: 1px solid #e0e0e0;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  #brand-bar label {
+    font-size: 13px;
+    font-weight: 500;
+    color: #666;
+  }
+
+  #brand-select {
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 14px;
+    background: white;
+    cursor: pointer;
+    min-width: 200px;
+  }
+
+  #brand-badge {
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    color: white;
+    display: none;
+  }
+
+  #chat-container {
+    flex: 1;
+    overflow-y: auto;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .message {
+    max-width: 75%;
+    padding: 12px 16px;
+    border-radius: 12px;
+    font-size: 14px;
+    line-height: 1.6;
+  }
+
+  .message.user {
+    background: #1a1a2e;
+    color: white;
+    align-self: flex-end;
+    border-bottom-right-radius: 4px;
+  }
+
+  .message.agent {
+    background: white;
+    color: #333;
+    align-self: flex-start;
+    border-bottom-left-radius: 4px;
+    border: 1px solid #e0e0e0;
+  }
+
+  .message.agent .decision-badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-size: 11px;
+    font-weight: 600;
+    margin-bottom: 8px;
+  }
+
+  .badge-resolve { background: #e8f5e9; color: #2e7d32; }
+  .badge-clarify { background: #fff8e1; color: #f57f17; }
+  .badge-escalate { background: #fce4ec; color: #c62828; }
+
+  .case-summary {
+    margin-top: 12px;
+    padding: 12px;
+    background: #fff3e0;
+    border-left: 3px solid #ff6f00;
+    border-radius: 4px;
+    font-size: 13px;
+    color: #555;
+  }
+
+  .case-summary strong {
+    display: block;
+    margin-bottom: 4px;
+    color: #e65100;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  #input-bar {
+    background: white;
+    border-top: 1px solid #e0e0e0;
+    padding: 16px 24px;
+    display: flex;
+    gap: 12px;
+    align-items: flex-end;
+  }
+
+  #message-input {
+    flex: 1;
+    padding: 12px 16px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 14px;
+    resize: none;
+    height: 44px;
+    max-height: 120px;
+    font-family: inherit;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+
+  #message-input:focus { border-color: #1a1a2e; }
+
+  #send-btn {
+    padding: 12px 24px;
+    background: #1a1a2e;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    height: 44px;
+    transition: background 0.2s;
+  }
+
+  #send-btn:hover { background: #2d2d4e; }
+  #send-btn:disabled { background: #aaa; cursor: not-allowed; }
+
+  #reset-btn {
+    padding: 12px 16px;
+    background: transparent;
+    color: #999;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 13px;
+    cursor: pointer;
+    height: 44px;
+  }
+
+  #reset-btn:hover { color: #333; border-color: #999; }
+
+  .welcome-message {
+    text-align: center;
+    color: #999;
+    font-size: 14px;
+    margin: auto;
+    padding: 40px;
+  }
+
+  .welcome-message h2 {
+    font-size: 20px;
+    color: #333;
+    margin-bottom: 8px;
+  }
+
+  .typing-indicator {
+    display: flex;
+    gap: 4px;
+    padding: 12px 16px;
+    background: white;
+    border: 1px solid #e0e0e0;
+    border-radius: 12px;
+    border-bottom-left-radius: 4px;
+    width: fit-content;
+  }
+
+  .typing-dot {
+    width: 8px;
+    height: 8px;
+    background: #aaa;
+    border-radius: 50%;
+    animation: typing 1.2s infinite;
+  }
+
+  .typing-dot:nth-child(2) { animation-delay: 0.2s; }
+  .typing-dot:nth-child(3) { animation-delay: 0.4s; }
+
+  @keyframes typing {
+    0%, 60%, 100% { transform: translateY(0); opacity: 0.4; }
+    30% { transform: translateY(-6px); opacity: 1; }
+  }
+</style>
+</head>
+<body>
+
+<div id="header">
+  <div>
+    <h1>RetailCore Group — Customer Service Platform</h1>
+    <p>Powered by AI | Multi-Brand Enterprise Support</p>
+  </div>
+  <span id="brand-badge"></span>
+</div>
+
+<div id="brand-bar">
+  <label for="brand-select">Select Brand:</label>
+  <select id="brand-select" onchange="selectBrand()">
+    <option value="">— Choose a brand —</option>
+  </select>
+  <span id="tagline" style="font-size:12px; color:#999; font-style:italic;"></span>
+</div>
+
+<div id="chat-container">
+  <div class="welcome-message">
+    <h2>Welcome to RetailCore Support</h2>
+    <p>Select a brand above to begin. Each brand has its own policies,<br>
+    products, and support context — all powered by the same AI platform.</p>
+  </div>
+</div>
+
+<div id="input-bar">
+  <textarea 
+    id="message-input" 
+    placeholder="Select a brand to start chatting..."
+    disabled
+    onkeydown="handleKey(event)"
+  ></textarea>
+  <button id="reset-btn" onclick="resetChat()">New Chat</button>
+  <button id="send-btn" onclick="sendMessage()" disabled>Send</button>
+</div>
+
+<script>
+  let currentBrand = null;
+  let conversationHistory = [];
+  let frustrationCount = 0;
+  let exchangeCount = 0;
+  let brands = {};
+
+  // Load brands from API
+  async function loadBrands() {
+    const response = await fetch('/brands');
+    brands = await response.json();
+    
+    const select = document.getElementById('brand-select');
+    Object.entries(brands).forEach(([id, info]) => {
+      const option = document.createElement('option');
+      option.value = id;
+      option.textContent = info.name;
+      select.appendChild(option);
+    });
+  }
+
+  function selectBrand() {
+    const select = document.getElementById('brand-select');
+    currentBrand = select.value;
+    
+    if (!currentBrand) return;
+    
+    const brand = brands[currentBrand];
+    
+    // Update badge
+    const badge = document.getElementById('brand-badge');
+    badge.textContent = brand.name;
+    badge.style.background = brand.color;
+    badge.style.display = 'inline-block';
+    
+    // Update tagline
+    document.getElementById('tagline').textContent = brand.tagline;
+    
+    // Update input border color
+    document.getElementById('message-input').style.borderColor = brand.color;
+    document.getElementById('send-btn').style.background = brand.color;
+    
+    // Enable input
+    document.getElementById('message-input').disabled = false;
+    document.getElementById('message-input').placeholder = 
+      `How can we help you with your ${brand.name} purchase today?`;
+    document.getElementById('send-btn').disabled = false;
+    
+    // Reset conversation
+    resetChat(false);
+    
+    // Show welcome
+    const container = document.getElementById('chat-container');
+    container.innerHTML = `
+      <div class="welcome-message">
+        <h2 style="color: ${brand.color}">${brand.name}</h2>
+        <p>${brand.tagline}</p>
+        <p style="margin-top: 8px;">How can we help you today?</p>
+      </div>
+    `;
+  }
+
+  function handleKey(event) {
+    if (event.key === 'Enter' && !event.shiftKey) {
+      event.preventDefault();
+      sendMessage();
+    }
+  }
+
+  async function sendMessage() {
+    const input = document.getElementById('message-input');
+    const message = input.value.trim();
+    
+    if (!message || !currentBrand) return;
+    
+    input.value = '';
+    
+    // Add user message to UI
+    addMessage('user', message);
+    
+    // Add to history
+    conversationHistory.push({ role: 'user', content: message });
+    
+    // Check for frustration signals
+    const frustrationWords = ['frustrated', 'angry', 'terrible', 'awful', 
+                              'ridiculous', 'unacceptable', 'worst', 'hate',
+                              'useless', 'terrible', 'furious'];
+    if (frustrationWords.some(w => message.toLowerCase().includes(w))) {
+      frustrationCount++;
+    }
+    
+    // Show typing indicator
+    const typing = showTyping();
+    
+    // Disable input while waiting
+    document.getElementById('send-btn').disabled = true;
+    
+    try {
+      const response = await fetch('/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          brand_id: currentBrand,
+          message: message,
+          conversation_history: conversationHistory,
+          frustration_count: frustrationCount,
+          exchange_count: exchangeCount
+        })
+      });
+      
+      const data = await response.json();
+      
+      // Remove typing indicator
+      typing.remove();
+      
+      // Add agent response
+      addAgentMessage(data);
+      
+      // Update state
+      conversationHistory.push({ role: 'assistant', content: data.response });
+      exchangeCount = data.exchange_count;
+      
+    } catch (error) {
+      typing.remove();
+      addMessage('agent-error', 'Connection error. Please try again.');
+    }
+    
+    document.getElementById('send-btn').disabled = false;
+    input.focus();
+  }
+
+  function addMessage(role, content) {
+    const container = document.getElementById('chat-container');
+    const div = document.createElement('div');
+    div.className = `message ${role}`;
+    div.textContent = content;
+    container.appendChild(div);
+    container.scrollTop = container.scrollHeight;
+  }
+
+  function addAgentMessage(data) {
+    const container = document.getElementById('chat-container');
+    const div = document.createElement('div');
+    div.className = 'message agent';
+    
+    const badgeClass = {
+      resolve: 'badge-resolve',
+      clarify: 'badge-clarify', 
+      escalate: 'badge-escalate'
+    }[data.decision] || 'badge-resolve';
+    
+    const badgeLabel = {
+      resolve: '✓ Resolving',
+      clarify: '? Clarifying',
+      escalate: '⚡ Escalating to Human'
+    }[data.decision] || 'Resolving';
+    
+    let html = `<span class="decision-badge ${badgeClass}">${badgeLabel}</span>
+                <div>${data.response.replace(/\n/g, '<br>')}</div>`;
+    
+    if (data.case_summary) {
+      html += `<div class="case-summary">
+                 <strong>Case Summary for Human Agent</strong>
+                 ${data.case_summary.replace(/\n/g, '<br>')}
+               </div>`;
+    }
+    
+    div.innerHTML = html;
+    container.appendChild(div);
+    container.scrollTop = container.scrollHeight;
+  }
+
+  function showTyping() {
+    const container = document.getElementById('chat-container');
+    const div = document.createElement('div');
+    div.className = 'typing-indicator';
+    div.innerHTML = '<div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div>';
+    container.appendChild(div);
+    container.scrollTop = container.scrollHeight;
+    return div;
+  }
+
+  function resetChat(showWelcome = true) {
+    conversationHistory = [];
+    frustrationCount = 0;
+    exchangeCount = 0;
+    
+    if (showWelcome && currentBrand) {
+      const brand = brands[currentBrand];
+      document.getElementById('chat-container').innerHTML = `
+        <div class="welcome-message">
+          <h2 style="color: ${brand.color}">${brand.name}</h2>
+          <p>${brand.tagline}</p>
+          <p style="margin-top: 8px;">How can we help you today?</p>
+        </div>
+      `;
+    }
+  }
+
+  // Initialize
+  loadBrands();
+</script>
+</body>
+</html>

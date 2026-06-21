@@ -1,37 +1,210 @@
+AGENTIC RAG WITH SELF-CORRECTION LOOP — SAMPLE SESSION
+Date: June 21, 2026
+System: TechCore Enterprise IT Knowledge Agent
+Model: claude-haiku-4-5-20251001
+Self-Correction: Enabled | Max loops: 3
 
-What is the password policy for privileged accounts?
-🔄 Self-correction enabled — up to 3 refinement loops
-Ask Agent
-Answer
-92%
-Confidence
-0
-Corrections
-✅ Answer (Confidence: 92%)
+Demonstrates: Pass (high confidence), Pass (medium confidence), Escalation
+============================================================
 
+QUERY 1: What is the password policy for privileged accounts?
+Confidence: 92% | Corrections: 0 | Grade: PASS
 
-# Password Policy for Privileged Accounts
+Answer:
+Based on the documentation, here is the complete password policy for
+privileged accounts:
 
-Based on the documentation, here is the complete password policy for privileged accounts:
+Password Requirements:
+- Minimum length: 16 characters
+- Complexity: Must include uppercase, lowercase, number, and special character
+- Expiration: 60 days (shorter than standard users who have 90 days)
+- Password history: Cannot reuse last 24 passwords
 
-## Password Requirements
-- **Minimum length:** 16 characters
-- **Complexity:** Must include uppercase, lowercase, number, and special character
-- **Expiration:** 60 days (shorter than standard users who have 90 days)
-- **Password history:** Cannot reuse last 24 passwords
+Multi-Factor Authentication:
+- Required: Yes, for all privileged accounts
+- Method: Hardware security key (YubiKey) is required — mandatory for
+  privileged accounts (Microsoft Authenticator preferred for standard users
+  but not sufficient for privileged access)
 
-## Multi-Factor Authentication (MFA)
-- **Required:** Yes, for all privileged accounts
-- **Method:** Hardware security key (YubiKey) is required — this is mandatory for privileged accounts (Microsoft Authenticator is the preferred option for standard users, but not sufficient for privileged access)
+Credential Management:
+- Storage: All admin credentials stored in CyberArk vault (pam.techcore.internal)
+- Access model: Just-in-time access for production systems
+- Session monitoring: Session recording enabled for all privileged sessions
+- Review cycle: Quarterly privileged access reviews conducted
 
-## Credential Management
-- **Storage:** All admin credentials must be stored in the CyberArk vault (pam.techcore.internal)
-- **Access model:** Just-in-time access for production systems
-- **Session monitoring:** Session recording is enabled for all privileged sessions
-- **Review cycle:** Privileged access review conducted quarterly
+Grade reason: Answer directly addresses the question with specific technical
+requirements, named systems (CyberArk, YubiKey, pam.techcore.internal),
+concrete policies, and actionable details.
 
----
-*Sources: TechCore Enterprise Knowledge Base*
-*Grade: Answer directly addresses the question with specific technical requirements, named systems (CyberArk, YubiKey, pam.techcore.internal), concrete policies, and actionable details that enable an engineer to understand and implement the policy.*
-PASS
-Answer directly addresses the question with specific technical requirements, named systems (CyberArk, YubiKey, pam.techcore.internal), concrete policies, and actionable details that enable an engineer to understand and implement the policy.
+============================================================
+
+QUERY 2: GKE pods in CrashLoopBackOff
+Confidence: 88% | Corrections: 0 | Grade: PASS
+
+Answer:
+Step 1: Get pod status and events
+  kubectl describe pod <pod-name>
+
+Step 2: Review crash logs
+  kubectl logs <pod-name> --previous
+
+Step 3: Check resource allocation
+- Review resource requests and limits in deployment manifest
+- If OOMKilled in pod status — increase memory limit
+
+Step 4: Verify configuration mounts
+- Confirm ConfigMaps and Secrets are correctly mounted
+- Verify they exist in the cluster with expected data
+
+Step 5: Inspect probe configuration
+- Check liveness and readiness probe settings
+- Misconfigured probes can trigger unnecessary restarts
+
+Step 6: Assess node resources
+  kubectl describe nodes
+
+Step 7: Check autoscaling limits
+- Verify node pool autoscaling isn't hitting limits
+
+Expected Resolution Time: 20-45 minutes
+
+Grade reason: Specific kubectl commands, concrete diagnostic steps, and
+actionable root causes (OOMKilled, probe misconfiguration, resource constraints).
+
+============================================================
+
+QUERY 3: VPN connection failing with error 691
+Confidence: 82% | Corrections: 0 | Grade: PASS
+
+Answer:
+Error 691 indicates an authentication failure.
+
+1. Verify user's Active Directory account status
+   - Confirm account is active and not locked
+   - Check password expiration status
+
+2. Test with known good credentials
+   - Isolates user-specific vs system-wide issue
+
+3. Verify RADIUS authentication server connectivity
+   - Confirm radius.techcore.internal is reachable
+   - Check AD connectivity from RADIUS server
+
+4. Review VPN tunnel logs for additional error details
+
+5. Verify firewall status if issue persists
+   - Primary: fw-dal-01
+   - Secondary: fw-dal-02
+
+Escalation Contact: security-team@techcore.com
+Expected Resolution Time: 20-45 minutes
+
+Grade reason: Specific troubleshooting steps, named systems (RADIUS server,
+firewalls fw-dal-01/02), contact information, and logical progression.
+
+============================================================
+
+QUERY 4: EC2 instance unreachable after deployment
+Confidence: 82% | Corrections: 0 | Grade: PASS
+
+Answer:
+Step 1: Verify instance is in running state in AWS Console
+
+Step 2: Review system logs
+- Actions > Monitor > Get System Log
+
+Step 3: Check security group rules
+- Port 22 (SSH) or Port 443 (HTTPS) open from bastion host
+
+Step 4: Verify NACL rules not blocking traffic
+
+Step 5: Check both status checks passed
+
+Step 6: If status checks failing
+- STOP then START instance (do NOT reboot)
+- Moves instance to new physical host
+
+Step 7: If EBS volume issue suspected
+- Detach volume and attach to recovery instance
+
+Grade reason: Specific actionable steps covering instance state, logs,
+security groups, NACLs, and status checks with sufficient technical detail.
+
+============================================================
+
+QUERY 5: DNS resolution failing for internal hostnames
+Confidence: 62% | Corrections: 0 | Grade: PASS
+
+Answer:
+Step 1: Check primary DNS servers
+- dns1.techcore.internal (10.0.1.10)
+- dns2.techcore.internal (10.0.1.11)
+
+Step 2: Verify DNS service is running on both servers
+
+Step 3: Test resolution from multiple locations to isolate scope
+
+Step 4: Check DNS forwarders for external resolution
+
+Step 5: Review recent DNS zone changes in change management system
+
+Expected Resolution Time: 15-30 minutes
+
+Note: Documentation does not include specific diagnostic commands (nslookup,
+dig). Reference additional DNS administration documentation for command-specific
+guidance.
+
+Grade reason: Specific DNS servers and structured steps, acknowledged missing
+diagnostic commands.
+
+============================================================
+
+QUERY 6: How do I respond to a ransomware detection?
+Confidence: 25% | Corrections: 3 | Grade: ESCALATION REQUIRED
+
+Self-correction triggered 3 times — agent rewrote search query each time
+before hitting maximum correction attempts.
+
+Escalation triggered because:
+- Agent could not verify all contact details against retrieved documentation
+- Missing NOC hotline number for SEV-1 activation
+- Recommends human specialist review before acting
+
+Best available answer (confidence 25%):
+Immediate Actions (First 15 Minutes):
+1. ISOLATE affected systems — disconnect from network
+2. Do NOT restart affected systems (preserves forensic evidence)
+3. Activate SEV-1 protocol — call NOC hotline immediately
+4. Notify CISO: James Okafor | j.okafor@techcore.com | +1-555-0191
+5. Preserve all logs — do not clear event logs
+6. Identify patient zero — first infected system
+7. Check backup integrity — do not restore yet
+
+Recovery:
+1. Engage CrowdStrike IR: 1-877-934-2210
+2. Determine blast radius
+3. Restore from clean backup after environment confirmed clean
+4. Post-incident review within 72 hours
+
+Critical: CEO and Legal notified within 1 hour of confirmed ransomware
+
+Escalation contacts: network-oncall@techcore.com | cloud-ops@techcore.com
+
+NOTE: This response demonstrates correct agent behavior — the agent escalated
+rather than return a low-confidence answer in a high-stakes security scenario.
+In production, this triggers immediate human specialist involvement.
+
+============================================================
+KEY INSIGHT FOR INTERVIEWERS:
+
+The self-correction loop demonstrates why this architecture is superior to
+standard RAG in enterprise environments:
+
+1. High confidence queries (password policy, GKE, VPN, EC2) — answered
+   immediately with 0 corrections and 80-92% confidence
+2. Medium confidence queries (DNS) — answered with appropriate caveats
+3. High-stakes low-confidence queries (ransomware) — escalated to human
+   rather than returning a potentially dangerous incomplete answer
+
+This is the difference between an AI tool engineers trust and one they abandon
+after it gives them wrong information twice.

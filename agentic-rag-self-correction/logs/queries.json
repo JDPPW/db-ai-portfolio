@@ -30,5 +30,37 @@
     "confidence_score": 92,
     "correction_count": 0,
     "grade_reason": "Answer directly addresses the question with specific technical requirements, named systems (CyberArk, YubiKey, pam.techcore.internal), concrete policies, and actionable details that enable an engineer to understand and implement the policy."
+  },
+  {
+    "timestamp": "2026-06-21T12:07:24.450966",
+    "question": "GKE pods in CrashLoopBackOff",
+    "grade": "pass",
+    "confidence_score": 88,
+    "correction_count": 0,
+    "grade_reason": "Answer directly addresses CrashLoopBackOff troubleshooting with specific kubectl commands, concrete diagnostic steps, and actionable root causes (OOMKilled, probe misconfiguration, resource constraints), though it could benefit from escalation contacts and GCP-specific monitoring tools."
+  },
+  {
+    "timestamp": "2026-06-21T12:07:55.564831",
+    "question": "DNS resolution failing for internal hostnames",
+    "grade": "pass",
+    "confidence_score": 62,
+    "correction_count": 0,
+    "grade_reason": "Answer addresses the question with specific DNS servers and structured steps, but lacks diagnostic commands and concrete verification procedures needed for independent troubleshooting."
+  },
+  {
+    "timestamp": "2026-06-21T12:08:19.855000",
+    "question": "VPN connection failing with error 691",
+    "grade": "pass",
+    "confidence_score": 82,
+    "correction_count": 0,
+    "grade_reason": "The answer directly addresses error 691 with specific troubleshooting steps, named systems (RADIUS server, firewalls fw-dal-01/02), contact information, and a logical progression from user-level to infrastructure checks, though it acknowledges some command-level details are not provided."
+  },
+  {
+    "timestamp": "2026-06-21T12:08:47.990244",
+    "question": "EC2 instance unreachable after deployment",
+    "grade": "pass",
+    "confidence_score": 82,
+    "correction_count": 0,
+    "grade_reason": "Answer directly addresses EC2 unreachability with specific, actionable troubleshooting steps covering instance state, logs, security groups, NACLs, and status checks; lacks escalation contacts and post-resolution guidance but provides sufficient technical detail for most common scenarios."
   }
 ]

@@ -6,3 +6,4 @@
 | [Multi-Tenant Customer Service AI Agent](./multiagent-customer-service) | Enterprise Retail | LangGraph, FastAPI, RAG, Multi-tenant, Web UI | ✅ Live |
 | [Agentic RAG with Self-Correction Loop](./agentic-rag-self-correction) | Enterprise IT | LangGraph, Self-correction, Confidence scoring, FastAPI | ✅ Live |
 | [MCP Weather Intelligence Agent](./mcp-weather-intelligence) | Travel & Operations | MCP, Real-time API, Tool use, FastAPI, Claude | ✅ Live |
+| [Enterprise Intelligence Pipeline](./crew-intelligence-pipeline) | Market Intelligence | CrewAI, LangGraph, Multi-agent, Quality gates, FastAPI | ✅ Live |

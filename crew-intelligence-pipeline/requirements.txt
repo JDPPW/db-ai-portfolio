@@ -1,0 +1,9 @@
+anthropic
+crewai
+langchain
+langchain-anthropic
+langgraph
+fastapi
+uvicorn
+python-dotenv
+jinja2

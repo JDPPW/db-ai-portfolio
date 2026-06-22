@@ -1,0 +1,7 @@
+ENTERPRISE INTELLIGENCE PIPELINE — SAMPLE OUTPUT
+Date: June 22, 2026
+Topic: Agentic AI market growth and key players 2025-2026
+Agents: Research Specialist → Strategic Analyst → Report Writer
+Orchestration: LangGraph state machine with quality gates
+Quality Grade: PASS
+============================================================

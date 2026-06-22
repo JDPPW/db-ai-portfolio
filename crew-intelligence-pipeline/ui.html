@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Enterprise Intelligence Pipeline</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: #f8f9fa;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  #header {
+    background: #1a1a2e;
+    color: white;
+    padding: 20px 32px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  #header h1 { font-size: 20px; font-weight: 600; }
+  #header p { font-size: 12px; color: #9ca3af; margin-top: 3px; }
+
+  .agent-badges {
+    display: flex;
+    gap: 8px;
+  }
+
+  .badge {
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 500;
+  }
+
+  .badge-research { background: #1e3a5f; color: #60a5fa; }
+  .badge-analysis { background: #1a2f1a; color: #4ade80; }
+  .badge-report { background: #3a1a2e; color: #f472b6; }
+
+  #main {
+    flex: 1;
+    max-width: 900px;
+    margin: 0 auto;
+    width: 100%;
+    padding: 32px 24px;
+  }
+
+  .intro {
+    background: white;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 24px;
+  }
+
+  .intro h2 {
+    font-size: 16px;
+    font-weight: 600;
+    color: #111827;
+    margin-bottom: 8px;
+  }
+
+  .intro p {
+    font-size: 13px;
+    color: #6b7280;
+    line-height: 1.6;
+    margin-bottom: 12px;
+  }
+
+  .pipeline-flow {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .pipeline-step {
+    padding: 6px 14px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 500;
+  }
+
+  .step-1 { background: #eff6ff; color: #1d4ed8; border: 1px solid #bfdbfe; }
+  .step-2 { background: #f0fdf4; color: #15803d; border: 1px solid #bbf7d0; }
+  .step-3 { background: #fdf4ff; color: #7e22ce; border: 1px solid #e9d5ff; }
+  .step-4 { background: #fff7ed; color: #c2410c; border: 1px solid #fed7aa; }
+  .step-5 { background: #f9fafb; color: #374151; border: 1px solid #e5e7eb; }
+
+  .arrow { color: #9ca3af; font-size: 14px; }
+
+  .examples {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 12px;
+  }
+
+  .example-btn {
+    background: #f9fafb;
+    border: 1px solid #e5e7eb;
+    color: #374151;
+    padding: 6px 14px;
+    border-radius: 6px;
+    font-size: 12px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .example-btn:hover {
+    border-color: #1a1a2e;
+    color: #1a1a2e;
+  }
+
+  #query-box {
+    background: white;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 24px;
+  }
+
+  #topic-input {
+    width: 100%;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    font-size: 14px;
+    padding: 12px 16px;
+    outline: none;
+    transition: border-color 0.2s;
+    margin-bottom: 12px;
+    font-family: inherit;
+  }
+
+  #topic-input:focus { border-color: #1a1a2e; }
+
+  .query-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .pipeline-info {
+    font-size: 12px;
+    color: #9ca3af;
+  }
+
+  #generate-btn {
+    background: #1a1a2e;
+    color: white;
+    border: none;
+    padding: 10px 28px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+
+  #generate-btn:hover { background: #2d2d4e; }
+  #generate-btn:disabled { background: #9ca3af; cursor: not-allowed; }
+
+  #results { display: none; }
+
+  .pipeline-progress {
+    background: white;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 16px;
+  }
+
+  .progress-title {
+    font-size: 13px;
+    font-weight: 600;
+    color: #111827;
+    margin-bottom: 12px;
+  }
+
+  .progress-steps {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .progress-step {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 13px;
+    color: #9ca3af;
+    padding: 8px 12px;
+    border-radius: 6px;
+    transition: all 0.3s;
+  }
+
+  .progress-step.active {
+    background: #eff6ff;
+    color: #1d4ed8;
+  }
+
+  .progress-step.complete {
+    background: #f0fdf4;
+    color: #15803d;
+  }
+
+  .step-icon { font-size: 16px; width: 20px; text-align: center; }
+
+  .report-card {
+    background: white;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    padding: 28px;
+  }
+
+  .report-meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid #e5e7eb;
+  }
+
+  .report-title {
+    font-size: 15px;
+    font-weight: 600;
+    color: #111827;
+  }
+
+  .quality-badge {
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 500;
+  }
+
+  .quality-pass { background: #f0fdf4; color: #15803d; border: 1px solid #bbf7d0; }
+  .quality-fail { background: #fff7ed; color: #c2410c; border: 1px solid #fed7aa; }
+
+  .report-content {
+    font-size: 14px;
+    line-height: 1.8;
+    color: #374151;
+    white-space: pre-wrap;
+  }
+
+  .report-content h1 {
+    font-size: 18px;
+    font-weight: 700;
+    color: #111827;
+    margin-bottom: 4px;
+  }
+
+  .report-content h2 {
+    font-size: 15px;
+    font-weight: 600;
+    color: #1a1a2e;
+    margin-top: 20px;
+    margin-bottom: 8px;
+    padding-bottom: 4px;
+    border-bottom: 2px solid #e5e7eb;
+  }
+
+  .agent-attribution {
+    margin-top: 20px;
+    padding-top: 16px;
+    border-top: 1px solid #e5e7eb;
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .copy-btn {
+    margin-top: 16px;
+    background: #f9fafb;
+    border: 1px solid #e5e7eb;
+    color: #374151;
+    padding: 8px 20px;
+    border-radius: 6px;
+    font-size: 13px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .copy-btn:hover { background: #e5e7eb; }
+</style>
+</head>
+<body>
+
+<div id="header">
+  <div>
+    <h1>Enterprise Intelligence Pipeline</h1>
+    <p>Multi-agent intelligence reports | CrewAI + LangGraph orchestration</p>
+  </div>
+  <div class="agent-badges">
+    <span class="badge badge-research">Research Agent</span>
+    <span class="badge badge-analysis">Analysis Agent</span>
+    <span class="badge badge-report">Report Agent</span>
+  </div>
+</div>
+
+<div id="main">
+  <div class="intro">
+    <h2>Three Specialized Agents. One Mission Each. One Report.</h2>
+    <p>This pipeline deploys three CrewAI agents with strictly defined roles, 
+    orchestrated by LangGraph state management. Each agent has exactly one mission 
+    and never overlaps with another. A quality gate between analysis and reporting 
+    ensures the final deliverable meets enterprise standards.</p>
+    <div class="pipeline-flow">
+      <span class="pipeline-step step-1">Research Agent</span>
+      <span class="arrow">→</span>
+      <span class="pipeline-step step-2">Analysis Agent</span>
+      <span class="arrow">→</span>
+      <span class="pipeline-step step-3">Quality Gate</span>
+      <span class="arrow">→</span>
+      <span class="pipeline-step step-4">Report Agent</span>
+      <span class="arrow">→</span>
+      <span class="pipeline-step step-5">Intelligence Brief</span>
+    </div>
+    <div class="examples">
+      <button class="example-btn" onclick="useExample(this)">Generative AI adoption in enterprise healthcare</button>
+      <button class="example-btn" onclick="useExample(this)">Competitive landscape of cloud contact center platforms</button>
+      <button class="example-btn" onclick="useExample(this)">Agentic AI market growth and key players 2025-2026</button>
+      <button class="example-btn" onclick="useExample(this)">Cybersecurity threats facing enterprise IT in 2026</button>
+      <button class="example-btn" onclick="useExample(this)">Model Context Protocol adoption across enterprise software</button>
+    </div>
+  </div>
+
+  <div id="query-box">
+    <input
+      type="text"
+      id="topic-input"
+      placeholder="Enter an intelligence topic (e.g. 'AI adoption in financial services 2026')"
+      onkeydown="handleKey(event)"
+    />
+    <div class="query-actions">
+      <span class="pipeline-info">⚡ 3 agents · LangGraph orchestration · Quality gates enabled</span>
+      <button id="generate-btn" onclick="generateReport()">Generate Intelligence Brief</button>
+    </div>
+  </div>
+
+  <div id="results"></div>
+</div>
+
+<script>
+  function useExample(btn) {
+    document.getElementById('topic-input').value = btn.textContent;
+    document.getElementById('topic-input').focus();
+  }
+
+  function handleKey(e) {
+    if (e.key === 'Enter') generateReport();
+  }
+
+  let currentStep = 0;
+  const steps = [
+    { icon: '🔍', label: 'Research Agent gathering intelligence...', key: 'research' },
+    { icon: '🧠', label: 'Analysis Agent extracting insights...', key: 'analysis' },
+    { icon: '✓', label: 'Quality gate evaluating output...', key: 'quality' },
+    { icon: '📋', label: 'Report Agent producing final brief...', key: 'report' }
+  ];
+
+  function showProgress() {
+    const resultsDiv = document.getElementById('results');
+    resultsDiv.style.display = 'block';
+
+    const stepsHtml = steps.map((s, i) => `
+      <div class="progress-step" id="step-${i}">
+        <span class="step-icon">${s.icon}</span>
+        <span>${s.label}</span>
+      </div>
+    `).join('');
+
+    resultsDiv.innerHTML = `
+      <div class="pipeline-progress">
+        <div class="progress-title">Pipeline executing — this takes 30-60 seconds</div>
+        <div class="progress-steps">${stepsHtml}</div>
+      </div>
+    `;
+
+    document.getElementById('step-0').className = 'progress-step active';
+
+    let step = 0;
+    const interval = setInterval(() => {
+      if (step < steps.length - 1) {
+        document.getElementById(`step-${step}`).className = 'progress-step complete';
+        step++;
+        document.getElementById(`step-${step}`).className = 'progress-step active';
+      }
+    }, 12000);
+
+    return interval;
+  }
+
+  async function generateReport() {
+    const topic = document.getElementById('topic-input').value.trim();
+    if (!topic) return;
+
+    const btn = document.getElementById('generate-btn');
+    btn.disabled = true;
+
+    const interval = showProgress();
+
+    try {
+      const response = await fetch('/generate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ topic })
+      });
+
+      const data = await response.json();
+      clearInterval(interval);
+      displayReport(data);
+
+    } catch (error) {
+      clearInterval(interval);
+      document.getElementById('results').innerHTML = `
+        <div style="background:white;border:1px solid #e5e7eb;border-radius:12px;padding:20px;color:#ef4444;">
+          Connection error. Please try again.
+        </div>
+      `;
+    }
+
+    btn.disabled = false;
+  }
+
+  function displayReport(data) {
+    const resultsDiv = document.getElementById('results');
+
+    const qualityClass = data.quality_grade === 'pass' ? 'quality-pass' : 'quality-fail';
+    const qualityLabel = data.quality_grade === 'pass' ? '✓ Quality Passed' : '⚠ Quality Review';
+    const retryNote = data.retry_count > 0
+      ? `<span class="badge badge-research">Refined ${data.retry_count}x</span>`
+      : '';
+
+    const formattedReport = data.report
+      .replace(/^# (.*)/gm, '<h1>$1</h1>')
+      .replace(/^## (.*)/gm, '<h2>$1</h2>')
+      .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+      .replace(/\n/g, '<br>');
+
+    resultsDiv.innerHTML = `
+      <div class="report-card">
+        <div class="report-meta">
+          <span class="report-title">Intelligence Brief — ${data.topic}</span>
+          <span class="quality-badge ${qualityClass}">${qualityLabel}</span>
+        </div>
+        <div class="report-content">${formattedReport}</div>
+        <div class="agent-attribution">
+          <span class="badge badge-research">Research Agent</span>
+          <span class="badge badge-analysis">Analysis Agent</span>
+          <span class="badge badge-report">Report Agent</span>
+          ${retryNote}
+          <span style="font-size:11px;color:#9ca3af;margin-left:auto;">
+            Orchestrated by LangGraph | Quality: ${data.quality_reason}
+          </span>
+        </div>
+        <button class="copy-btn" onclick="copyReport()">Copy Report</button>
+      </div>
+    `;
+  }
+
+  function copyReport() {
+    const content = document.querySelector('.report-content').innerText;
+    navigator.clipboard.writeText(content).then(() => {
+      const btn = document.querySelector('.copy-btn');
+      btn.textContent = 'Copied!';
+      setTimeout(() => btn.textContent = 'Copy Report', 2000);
+    });
+  }
+</script>
+</body>
+</html>

@@ -33,6 +33,12 @@ class ReportResponse(BaseModel):
     quality_reason: str
     retry_count: int
 
+@app.get("/", response_class=HTMLResponse)
+async def serve_ui():
+    ui_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "ui.html")
+    with open(ui_path, "r") as f:
+        return HTMLResponse(content=f.read())
+
 @app.post("/generate", response_model=ReportResponse)
 async def generate(request: ReportRequest):
     if not request.topic.strip():

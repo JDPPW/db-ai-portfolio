@@ -7,3 +7,6 @@ langchain-text-splitters
 chromadb
 pypdf
 python-dotenv
+fastapi
+uvicorn
+jinja2

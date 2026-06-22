@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RAG Clinical Document Intelligence Agent</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: #f0f4f8;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  #header {
+    background: #1a3a5c;
+    color: white;
+    padding: 18px 32px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  #header h1 { font-size: 18px; font-weight: 600; }
+  #header p { font-size: 12px; color: #93c5fd; margin-top: 3px; }
+
+  .hipaa-badge {
+    background: #0d2035;
+    color: #60a5fa;
+    border: 1px solid #3b82f6;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 500;
+  }
+
+  #main {
+    flex: 1;
+    max-width: 860px;
+    margin: 0 auto;
+    width: 100%;
+    padding: 32px 24px;
+  }
+
+  .intro {
+    background: white;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 24px;
+  }
+
+  .intro h2 { font-size: 15px; font-weight: 600; color: #1e293b; margin-bottom: 8px; }
+  .intro p { font-size: 13px; color: #64748b; line-height: 1.6; margin-bottom: 12px; }
+
+  .examples {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .example-btn {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    color: #475569;
+    padding: 6px 14px;
+    border-radius: 6px;
+    font-size: 12px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .example-btn:hover { border-color: #1a3a5c; color: #1a3a5c; }
+
+  #query-box {
+    background: white;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 24px;
+  }
+
+  #question-input {
+    width: 100%;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    font-size: 14px;
+    padding: 12px 16px;
+    outline: none;
+    transition: border-color 0.2s;
+    margin-bottom: 12px;
+    font-family: inherit;
+  }
+
+  #question-input:focus { border-color: #1a3a5c; }
+
+  .actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .hipaa-note { font-size: 12px; color: #94a3b8; }
+
+  #ask-btn {
+    background: #1a3a5c;
+    color: white;
+    border: none;
+    padding: 10px 24px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+
+  #ask-btn:hover { background: #1e4976; }
+  #ask-btn:disabled { background: #94a3b8; cursor: not-allowed; }
+
+  #results { display: none; }
+
+  .answer-card {
+    background: white;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 24px;
+  }
+
+  .answer-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #e2e8f0;
+  }
+
+  .answer-label { font-size: 13px; font-weight: 600; color: #1e293b; }
+
+  .rag-badge {
+    background: #f0fdf4;
+    color: #15803d;
+    border: 1px solid #bbf7d0;
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-size: 11px;
+  }
+
+  .question-text {
+    font-size: 13px;
+    color: #64748b;
+    margin-bottom: 12px;
+    font-style: italic;
+  }
+
+  .answer-text {
+    font-size: 14px;
+    line-height: 1.8;
+    color: #374151;
+    white-space: pre-wrap;
+  }
+
+  .loading {
+    text-align: center;
+    padding: 32px;
+    color: #64748b;
+    font-size: 13px;
+  }
+
+  .dots span {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    background: #1a3a5c;
+    border-radius: 50%;
+    margin: 0 3px;
+    animation: bounce 1.2s infinite;
+  }
+
+  .dots span:nth-child(2) { animation-delay: 0.2s; }
+  .dots span:nth-child(3) { animation-delay: 0.4s; }
+
+  @keyframes bounce {
+    0%, 60%, 100% { transform: translateY(0); opacity: 0.4; }
+    30% { transform: translateY(-8px); opacity: 1; }
+  }
+</style>
+</head>
+<body>
+
+<div id="header">
+  <div>
+    <h1>RAG Clinical Document Intelligence Agent</h1>
+    <p>Retrieval-Augmented Generation | Healthcare Document Q&A</p>
+  </div>
+  <span class="hipaa-badge">🔒 HIPAA-Aware</span>
+</div>
+
+<div id="main">
+  <div class="intro">
+    <h2>Clinical Document Query System</h2>
+    <p>This agent ingests clinical patient documents, embeds them into a ChromaDB 
+    vector database, and answers natural language queries from authorized clinical 
+    staff. Responses are grounded strictly in the document — the agent will not 
+    hallucinate or guess when information is absent.</p>
+    <p>Try asking about the sample patient record:</p>
+    <div class="examples">
+      <button class="example-btn" onclick="useExample(this)">What medications is the patient taking?</button>
+      <button class="example-btn" onclick="useExample(this)">Does the patient have any allergies?</button>
+      <button class="example-btn" onclick="useExample(this)">What is the primary diagnosis?</button>
+      <button class="example-btn" onclick="useExample(this)">What is the treatment plan?</button>
+      <button class="example-btn" onclick="useExample(this)">What are the patient's vital signs?</button>
+    </div>
+  </div>
+
+  <div id="query-box">
+    <input
+      type="text"
+      id="question-input"
+      placeholder="Ask a clinical question about the patient record..."
+      onkeydown="handleKey(event)"
+    />
+    <div class="actions">
+      <span class="hipaa-note">🔒 HIPAA-controlled environment | Authorized access only</span>
+      <button id="ask-btn" onclick="askQuestion()">Query Document</button>
+    </div>
+  </div>
+
+  <div id="results"></div>
+</div>
+
+<script>
+  function useExample(btn) {
+    document.getElementById('question-input').value = btn.textContent;
+    document.getElementById('question-input').focus();
+  }
+
+  function handleKey(e) {
+    if (e.key === 'Enter') askQuestion();
+  }
+
+  async function askQuestion() {
+    const question = document.getElementById('question-input').value.trim();
+    if (!question) return;
+
+    const resultsDiv = document.getElementById('results');
+    const btn = document.getElementById('ask-btn');
+
+    btn.disabled = true;
+    resultsDiv.style.display = 'block';
+    resultsDiv.innerHTML = `
+      <div class="loading">
+        <div class="dots"><span></span><span></span><span></span></div>
+        <p style="margin-top:12px;">Retrieving from clinical knowledge base...</p>
+      </div>
+    `;
+
+    try {
+      const response = await fetch('/ask', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ question })
+      });
+
+      const data = await response.json();
+
+      resultsDiv.innerHTML = `
+        <div class="answer-card">
+          <div class="answer-header">
+            <span class="answer-label">Clinical Query Response</span>
+            <span class="rag-badge">✓ Grounded in Document</span>
+          </div>
+          <div class="question-text">Q: ${data.question}</div>
+          <div class="answer-text">${data.answer.replace(/\n/g, '<br>')}</div>
+        </div>
+      `;
+
+    } catch (error) {
+      resultsDiv.innerHTML = `
+        <div class="answer-card" style="color:#ef4444;">
+          Connection error. Please try again.
+        </div>
+      `;
+    }
+
+    btn.disabled = false;
+  }
+</script>
+</body>
+</html>
